@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/dialog/todo.dart';
+import '../widgets/card/todo.dart';
 
 class TodoScreen extends StatefulWidget {
   @override
@@ -14,13 +15,31 @@ class _TodoScreenState extends State<TodoScreen> {
       appBar: AppBar(
         title: Text('Todo'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: ListView(
           children: <Widget>[
             // to return list of cards
             Text(
-              'TODO 1',
+              "Upcoming Todo",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            TodoCard(),
+            TodoCard(),
+            Padding(
+              padding: EdgeInsets.only(top: 40.0),
+              child: Text(
+                "Completed Todo",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            TodoCard(
+              completed: true,
+            ),
+            TodoCard(
+              completed: true,
             ),
           ],
         ),
