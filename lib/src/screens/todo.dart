@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
+import '../bloc/models/todo.dart';
+import '../bloc/blocs/todo/bloc.dart';
 import '../widgets/dialog/todo.dart';
 import '../widgets/card/todo.dart';
 
-class TodoScreen extends StatefulWidget {
-  @override
-  _TodoScreenState createState() => _TodoScreenState();
-}
-
-class _TodoScreenState extends State<TodoScreen> {
+class TodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TodoBloc _todoBloc = BlocProvider.of<TodoBloc>(context);
+    _todoBloc.dispatch(LoadTodo());
+
+    final Uuid _uuid = new Uuid();
+    TodoModel _todo = TodoModel(_uuid.v1(), "test", 'date');
+
+    _todoBloc.dispatch(AddTodo(_todo));
     return Scaffold(
       appBar: AppBar(
         title: Text('Todo'),
@@ -25,8 +31,22 @@ class _TodoScreenState extends State<TodoScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            TodoCard(),
-            TodoCard(),
+            BlocBuilder(
+              bloc: _todoBloc,
+              builder: (BuildContext context, TodoState state) {
+                if (state is TodosLoaded) {
+                  List<TodoModel> upcomingTodos = state.todos["upcoming"];
+
+                  return Column(
+                    children: upcomingTodos.map((TodoModel todo) {
+                      return TodoCard(todo);
+                    }).toList(),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
             Padding(
               padding: EdgeInsets.only(top: 40.0),
               child: Text(
@@ -35,12 +55,12 @@ class _TodoScreenState extends State<TodoScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            TodoCard(
-              completed: true,
-            ),
-            TodoCard(
-              completed: true,
-            ),
+            // TodoCard(
+            //   completed: true,
+            // ),
+            // TodoCard(
+            //   completed: true,
+            // ),
           ],
         ),
       ),

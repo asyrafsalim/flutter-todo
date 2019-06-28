@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../bloc/models/todo.dart';
+
 class TodoCard extends StatelessWidget {
   final bool completed;
+  final TodoModel todo;
 
-  TodoCard({this.completed: false});
+  TodoCard(this.todo, {this.completed: false});
 
   @override
   Widget build(BuildContext context) {
-    print(this.completed);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -17,13 +19,13 @@ class TodoCard extends StatelessWidget {
             leading:
                 Icon(this.completed ? Icons.check_circle : Icons.assignment),
             title: Text(
-              'Toto item...',
+              this.todo.task,
               style: TextStyle(
                   decoration:
                       this.completed ? TextDecoration.lineThrough : null),
             ),
             subtitle: Text(
-              'Created Date: today',
+              'Created Date: ${this.todo.date}',
               style: TextStyle(
                   decoration:
                       this.completed ? TextDecoration.lineThrough : null),
