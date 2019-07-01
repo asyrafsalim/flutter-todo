@@ -25,10 +25,10 @@ class AddTodo extends TodoEvent {
 }
 
 class CompleteTodo extends TodoEvent {
-  final TodoModel todos;
+  final TodoModel todo;
 
-  CompleteTodo(this.todos) : super();
+  CompleteTodo(this.todo) : super([todo]);
 
   @override
-  String toString() => 'CompleteTodo { Todos: $todos }';
+  String toString() => 'CompleteTodo';
 }
