@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 import '../bloc/models/todo.dart';
 import '../bloc/blocs/todo/bloc.dart';
@@ -13,10 +12,6 @@ class TodoScreen extends StatelessWidget {
     final TodoBloc _todoBloc = BlocProvider.of<TodoBloc>(context);
     _todoBloc.dispatch(LoadTodo());
 
-    final Uuid _uuid = new Uuid();
-    TodoModel _todo = TodoModel(_uuid.v1(), "test", 'date');
-
-    _todoBloc.dispatch(AddTodo(_todo));
     return Scaffold(
       appBar: AppBar(
         title: Text('Todo'),
@@ -55,12 +50,21 @@ class TodoScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            // TodoCard(
-            //   completed: true,
-            // ),
-            // TodoCard(
-            //   completed: true,
-            // ),
+            BlocBuilder(
+              bloc: _todoBloc,
+              builder: (BuildContext context, TodoState state) {
+                if (state is TodosLoaded) {
+                  List<TodoModel> completedTodos = state.todos["completed"];
+                  return Column(
+                    children: completedTodos.map((TodoModel todo) {
+                      return TodoCard(todo);
+                    }).toList(),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -69,9 +73,9 @@ class TodoScreen extends StatelessWidget {
               context: context,
               builder: (_) => TodoDialog(),
             ),
-        tooltip: 'Increment',
+        tooltip: 'Add todo',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

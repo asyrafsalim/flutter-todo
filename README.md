@@ -1,10 +1,14 @@
 # flutter_todo
-Flutter todo app
+Flutter todo app with bloc
 
 ## Tasks
 
-- [] Implement Bloc package
-- [] Add todos
-- [] Delete todos
+- [x] Implement Bloc package
+- [x] Add todos
 - [] Edit todos
-- [] Complete todos
+- [x] Complete todos
+- [ ] Widget tests 
+
+## Preview
+
+![todo screen](./todo.jpg)
