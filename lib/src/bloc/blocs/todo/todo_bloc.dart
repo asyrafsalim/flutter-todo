@@ -30,9 +30,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     if (currentState is TodosLoaded) {
       var todoState = currentState as TodosLoaded;
       var todosMap = todoState.todos;
-      todosMap['upcoming'] = [...todosMap['upcoming'], event.todo];
+      var updatedUpcoming = [...todosMap['upcoming'], event.todo];
 
-      yield (TodosLoaded(todosMap));
+      yield (TodosLoaded(
+          {"upcoming": updatedUpcoming, "completed": todosMap['completed']}));
     }
   }
 
