@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/models/todo.dart';
+import '../../bloc/blocs/todo/bloc.dart';
 
 class TodoCard extends StatelessWidget {
   final TodoModel todo;
@@ -11,6 +12,8 @@ class TodoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool completed = this.todo.completedDate.isNotEmpty ? true : false;
+    final TodoBloc _todoBloc = BlocProvider.of<TodoBloc>(context);
+
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -38,15 +41,13 @@ class TodoCard extends StatelessWidget {
                     children: <Widget>[
                       FlatButton(
                         child: Text('Edit'),
-                        onPressed: () {
-                          print("edit");
-                        },
+                        disabledTextColor: Colors.grey,
+                        onPressed: null,
                       ),
                       FlatButton(
                         child: Text('Mark As Complete'),
-                        onPressed: () {
-                          print("complete");
-                        },
+                        onPressed: () =>
+                            _todoBloc.dispatch(CompleteTodo(this.todo)),
                       ),
                     ],
                   ),
